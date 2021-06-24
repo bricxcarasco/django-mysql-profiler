@@ -28,3 +28,17 @@ class User(models.Model):
     def __str__(self):
         return self.email
 
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=100)
+    email = models.EmailField(default='null')
+    body = models.TextField(default='null')
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=now())
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return 'Comment {0} by {1}'.format(self.body, self.name)
+
