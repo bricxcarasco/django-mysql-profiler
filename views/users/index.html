@@ -5,5 +5,32 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Profiler App</h1>
+    <h1 class="text-center mb-4">Profiler App</h1>
+
+    {% if users %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">Profile Image</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email Adress</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td class="text-center"><img class="rounded-circle" src="media/{{ user.image }}" width="50" height="50" alt="User Image" /></td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-center">No record found.</p>
+    {% endif %}
 {% endblock %}
