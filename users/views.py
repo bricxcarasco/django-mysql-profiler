@@ -20,11 +20,6 @@ def save(request):
     position = request.POST.get('position')
     image = 'profile/default.jpeg'
 
-    # if request.POST.get('current_email') != email:
-    #     return HttpResponse([email, request.POST.get('current_email')])
-    # else:
-    #     return HttpResponse(str(User.objects.get(email=email)))
-
     if request.POST.get('current_image'):
         image = request.POST.get('current_image')
 
@@ -70,4 +65,8 @@ def edit(request, id):
     except User.DoesNotExist:
         raise Http404('User does not exist.')
     return render(request, 'users/edit.html' , { 'user': user })
+
+def delete(request, id):
+    User.objects.filter(pk=id).delete()
+    return HttpResponseRedirect('/users')
 

@@ -10,5 +10,6 @@ urlpatterns = [
     path('add', views.add, name='add'),
     path('save', views.save, name='save'),
     path('<int:id>', views.detail, name='detail'),
-    path('edit/<int:id>', views.edit, name='edit')
+    path('edit/<int:id>', views.edit, name='edit'),
+    path('delete/<int:id>', views.delete, name='delete')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
