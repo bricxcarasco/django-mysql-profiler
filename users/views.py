@@ -20,6 +20,11 @@ def save(request):
     position = request.POST.get('position')
     image = 'profile/default.jpeg'
 
+    # if request.POST.get('current_email') != email:
+    #     return HttpResponse([email, request.POST.get('current_email')])
+    # else:
+    #     return HttpResponse(str(User.objects.get(email=email)))
+
     if request.POST.get('current_image'):
         image = request.POST.get('current_image')
 
@@ -27,24 +32,20 @@ def save(request):
         image = request.FILES.get('image')
 
     try:
-        check_user = []
-        if mode == 'add':
+        if mode == 'add' or request.POST.get('current_email') != email:
             check_email = User.objects.get(email=email)
-        else:
-            if request.POST.get('current_email') != email:
-                check_email_if_update = User.objects.get(email=email)
+
         context = { 'error': 'Email address already exists.' }
-        if mode == 'edit':
-            context['user'] = {
-                'id': request.POST.get('id'),
-                'first_name': first_name,
-                'last_name': last_name,
-                'email': email,
-                'position': position,
-                'image': image
-            }
+        context['user'] = {
+            'id': request.POST.get('id'),
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'position': position,
+            'image': image
+        }
         return render(request, 'users/add.html' if mode == 'add' else 'users/edit.html', context)
-    except exceptions.ObjectDoesNotExist:
+    except exceptions.ObjectDoesNotExist:   
         user = User()
         if mode == 'edit':
             user = User.objects.get(pk=request.POST.get('id'))
