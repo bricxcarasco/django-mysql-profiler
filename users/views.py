@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core import serializers, exceptions
 from .models import User
 
@@ -34,4 +34,11 @@ def save(request):
         user.image = image
         user.save()
         return HttpResponseRedirect('/users')
+
+def detail(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        raise Http404('User does not exist.')
+    return render(request, 'users/detail.html' , { 'user': user })
 

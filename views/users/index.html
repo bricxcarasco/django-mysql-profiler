@@ -21,7 +21,7 @@
                 <tbody>
                     {% for user in users %}
                         <tr>
-                            <td class="text-center"><img class="rounded-circle" src="media/{{ user.image }}" width="50" height="50" alt="User Image" /></td>
+                            <td class="text-center"><a href="{% url 'users:detail' user.id %}"><img class="rounded-circle" src="media/{{ user.image }}" width="50" height="50" alt="User Image" /></a></td>
                             <td>{{ user.first_name }}</td>
                             <td>{{ user.last_name }}</td>
                             <td>{{ user.email }}</td>

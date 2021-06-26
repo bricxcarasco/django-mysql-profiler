@@ -8,5 +8,6 @@ app_name = 'users'
 urlpatterns = [
     path('', views.index, name='index'),
     path('add', views.add, name='add'),
-    path('save', views.save, name='save')
+    path('save', views.save, name='save'),
+    path('<int:id>', views.detail, name='detail')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
