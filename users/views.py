@@ -13,20 +13,41 @@ def add(request):
     return render(request, 'users/add.html')
 
 def save(request):
+    mode = request.POST.get('mode')
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
     email = request.POST.get('email')
     position = request.POST.get('position')
     image = 'profile/default.jpeg'
 
+    if request.POST.get('current_image'):
+        image = request.POST.get('current_image')
+
     if request.FILES.get('image'):
         image = request.FILES.get('image')
 
     try:
-        check_email = User.objects.get(email=email)
-        return render(request, 'users/add.html', { 'error': 'Email address already exists.' })
+        check_user = []
+        if mode == 'add':
+            check_email = User.objects.get(email=email)
+        else:
+            if request.POST.get('current_email') != email:
+                check_email_if_update = User.objects.get(email=email)
+        context = { 'error': 'Email address already exists.' }
+        if mode == 'edit':
+            context['user'] = {
+                'id': request.POST.get('id'),
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'position': position,
+                'image': image
+            }
+        return render(request, 'users/add.html' if mode == 'add' else 'users/edit.html', context)
     except exceptions.ObjectDoesNotExist:
         user = User()
+        if mode == 'edit':
+            user = User.objects.get(pk=request.POST.get('id'))
         user.first_name = first_name
         user.last_name = last_name
         user.email = email
@@ -41,4 +62,11 @@ def detail(request, id):
     except User.DoesNotExist:
         raise Http404('User does not exist.')
     return render(request, 'users/detail.html' , { 'user': user })
+
+def edit(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        raise Http404('User does not exist.')
+    return render(request, 'users/edit.html' , { 'user': user })
 
