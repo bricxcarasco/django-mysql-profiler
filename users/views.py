@@ -1,13 +1,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core import serializers, exceptions
+from django.core.paginator import Paginator
 from .models import User
 
 # Create your views here.
 def index(request):
-    users = User.objects.order_by('-created_at')
-    context = {'users': users}
-    return render(request, 'users/index.html', context=context)
+    users = User.objects.all().order_by('-created_at')
+    paginator = Paginator(users, 5)
+
+    page_number = request.GET.get('page')
+
+    users = paginator.get_page(page_number)
+
+    return render(request, 'users/index.html', {'page_object': users})
 
 def add(request):
     return render(request, 'users/add.html')
