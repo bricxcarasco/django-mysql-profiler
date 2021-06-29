@@ -7,6 +7,15 @@
 {% block content %}
     <h1 class="text-center mb-4">Profiler App</h1>
 
+    <form class="mb-2" action="{% url 'users:search' %}" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" placeholder="Search" required>
+            <div class="input-group-append">
+                <button class="btn btn-info">Search</button>
+            </div>
+        </div>
+    </form>
+
     {% if error %}
         <p class="alert alert-danger">{{ error }}</p>
     {% endif %}
