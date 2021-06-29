@@ -2,18 +2,25 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core import serializers, exceptions
 from django.core.paginator import Paginator
+from django.db.models import Q
 from .models import User
 
 # Create your views here.
 def index(request):
     users = User.objects.all().order_by('-created_at')
     paginator = Paginator(users, 5)
-
     page_number = request.GET.get('page')
-
     users = paginator.get_page(page_number)
-
     return render(request, 'users/index.html', {'users': users})
+
+def search(request):
+    term = request.GET.get('search', '')
+    users = User.objects.filter(Q(first_name__icontains=term) | Q(last_name__icontains=term)).order_by('-created_at')
+    paginator = Paginator(users, 5)
+    page_number = request.GET.get('page')
+    users = paginator.get_page(page_number)
+    return render(request, 'users/index.html', {'users': users})
+
 
 def add(request):
     return render(request, 'users/add.html')
