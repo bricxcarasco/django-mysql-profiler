@@ -13,7 +13,7 @@ def index(request):
 
     users = paginator.get_page(page_number)
 
-    return render(request, 'users/index.html', {'page_object': users})
+    return render(request, 'users/index.html', {'users': users})
 
 def add(request):
     return render(request, 'users/add.html')

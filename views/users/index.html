@@ -36,6 +36,26 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+            <ul class="pagination">
+                {% if users.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% if users.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ users.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ users.paginator.num_pages }}">Last &raquo</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
     {% else %}
         <p class="text-center">No record found.</p>
